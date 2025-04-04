@@ -46,3 +46,27 @@ func DeleteUsers(name string) *gorm.DB {
 func UpdateUsers(name string, user UserBasic) *gorm.DB {
 	return app.Db.Model(&user).Where("name = ?", name).Updates(&user)
 }
+
+func FindUserByName(name string) bool {
+	if app.Db.Where("name = ?", name).Find(&UserBasic{}).RowsAffected != 0 {
+		return true
+	} else {
+		return false
+	}
+}
+
+func FindUserByPhone(phone string) bool {
+	if app.Db.Where("phone = ?", phone).Find(&UserBasic{}).RowsAffected != 0 {
+		return true
+	} else {
+		return false
+	}
+}
+
+func FindUserByEmail(email string) bool {
+	if app.Db.Where("email = ?", email).Find(&UserBasic{}).RowsAffected != 0 {
+		return true
+	} else {
+		return false
+	}
+}

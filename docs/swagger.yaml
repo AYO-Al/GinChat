@@ -17,7 +17,24 @@ paths:
       tags:
       - example
   /user/create:
-    get:
+    post:
+      parameters:
+      - description: name
+        in: formData
+        name: name
+        type: string
+      - description: password
+        in: formData
+        name: password
+        type: string
+      - description: email
+        in: formData
+        name: email
+        type: string
+      - description: phone
+        in: formData
+        name: phone
+        type: string
       responses:
         "200":
           description: code","msg"}

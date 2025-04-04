@@ -16,12 +16,25 @@ func GetData(c *gin.Context) {
 // CreateUser
 // @Tags 用户模块
 // @Summary 新增用户
+// @param name formData string false "name"
+// @param password formData string false "password"
+// @param email formData string false "email"
+// @param phone formData string false "phone"
 // @Success 200 {string} json{"code","msg"}
-// @Router /user/create [get]
+// @Router /user/create [post]
 func CreateUser(c *gin.Context) {
 	user := models.UserBasic{}
-	user.Name = c.Query("name")
-	user.PassWord = c.Query("password")
+	user.Name = c.PostForm("name")
+	user.PassWord = c.PostForm("password")
+	user.Phone = c.PostForm("phone")
+	user.Email = c.PostForm("email")
+	if models.FindUserByPhone(user.Phone) || models.FindUserByEmail(user.Email) || models.FindUserByName(user.Name) {
+		c.JSON(-1, gin.H{
+			"msg": "用户名/电话/邮箱已存在",
+		})
+		return
+	}
+
 	db := models.CreateUsers(user)
 
 	if db.Error != nil {
@@ -30,7 +43,7 @@ func CreateUser(c *gin.Context) {
 		})
 	} else {
 		c.JSON(200, gin.H{
-			"msg": "新增用户成功",
+			"msg": fmt.Sprintf("新增用户成功:%s", user),
 		})
 	}
 }

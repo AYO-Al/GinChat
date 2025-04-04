@@ -2,8 +2,10 @@ package service
 
 import (
 	"GinChat/models"
+	"GinChat/utils"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 	"net/http"
 )
 
@@ -51,6 +53,48 @@ func DeleteUser(c *gin.Context) {
 	} else {
 		c.JSON(200, gin.H{
 			"msg": fmt.Sprintf("删除用户%s成功", name),
+		})
+	}
+}
+
+// UpdateUser
+// @Tags 用户模块
+// @Summary 修改用户
+// @param name formData string false "name"
+// @param update_name formData string false "update_name"
+// @param update_password formData string false "update_password"
+// @param update_email formData string false "update_email"
+// @param update_phone formData string false "update_phone"
+// @Success 200 {string} json{"code","msg"}
+// @Router /user/update [post]
+func UpdateUser(c *gin.Context) {
+	var user models.UserBasic
+	validate := validator.New()
+
+	name := c.PostForm("name")
+	user.Name = c.PostForm("update_name")
+	user.PassWord = c.PostForm("update_password")
+	user.Email = c.PostForm("update_email")
+	user.Phone = c.PostForm("update_phone")
+
+	// 注册自定义验证器
+	validate.RegisterValidation("phone", utils.ValidaPhone)
+
+	if err := validate.Struct(user); err != nil {
+		c.JSON(-1, gin.H{
+			"msg": err.Error(),
+		})
+		return
+	}
+	db := models.UpdateUsers(name, user)
+
+	if db.Error != nil {
+		c.JSON(-1, gin.H{
+			"msg": db.Error.Error(),
+		})
+	} else {
+		c.JSON(200, gin.H{
+			"msg": fmt.Sprintf("修改用户%s后信息:\nname:%s\npassword:%s\n", name, user.Name, user.PassWord),
 		})
 	}
 }

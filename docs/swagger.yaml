@@ -29,7 +29,7 @@ paths:
   /user/delete:
     get:
       parameters:
-      - description: id
+      - description: name
         in: query
         name: name
         type: string
@@ -39,6 +39,37 @@ paths:
           schema:
             type: string
       summary: 删除用户
+      tags:
+      - 用户模块
+  /user/update:
+    post:
+      parameters:
+      - description: name
+        in: formData
+        name: name
+        type: string
+      - description: update_name
+        in: formData
+        name: update_name
+        type: string
+      - description: update_password
+        in: formData
+        name: update_password
+        type: string
+      - description: update_email
+        in: formData
+        name: update_email
+        type: string
+      - description: update_phone
+        in: formData
+        name: update_phone
+        type: string
+      responses:
+        "200":
+          description: code","msg"}
+          schema:
+            type: string
+      summary: 修改用户
       tags:
       - 用户模块
 swagger: "2.0"

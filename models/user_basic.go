@@ -30,6 +30,15 @@ func (table *UserBasic) TableName() string {
 
 func GetUser() []*UserBasic {
 	var users []*UserBasic
-	app.DB.Find(&users)
+	app.Db.Find(&users)
 	return users
+}
+
+func CreateUsers(user UserBasic) *gorm.DB {
+	return app.Db.Create(&user)
+}
+
+func DeleteUsers(name string) *gorm.DB {
+	var user UserBasic
+	return app.Db.Where("name = ?", name).Delete(&user)
 }

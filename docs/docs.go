@@ -37,6 +37,46 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/user/create": {
+            "get": {
+                "tags": [
+                    "用户模块"
+                ],
+                "summary": "新增用户",
+                "responses": {
+                    "200": {
+                        "description": "code\",\"msg\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/delete": {
+            "get": {
+                "tags": [
+                    "用户模块"
+                ],
+                "summary": "删除用户",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "name",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "code\",\"msg\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
         }
     }
 }`

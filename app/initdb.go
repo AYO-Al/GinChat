@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-var DB *gorm.DB
+var Db *gorm.DB
 
 func init() {
 
@@ -33,8 +33,8 @@ func init() {
 	}
 
 	// 如果直接在上面赋值，会覆盖全局变量
-	DB = dbc
-	db, err := DB.DB()
+	Db = dbc
+	db, err := Db.DB()
 	if err != nil {
 		fmt.Println(err)
 	}

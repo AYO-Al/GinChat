@@ -16,4 +16,29 @@ paths:
       summary: ping example
       tags:
       - example
+  /user/create:
+    get:
+      responses:
+        "200":
+          description: code","msg"}
+          schema:
+            type: string
+      summary: 新增用户
+      tags:
+      - 用户模块
+  /user/delete:
+    get:
+      parameters:
+      - description: id
+        in: query
+        name: name
+        type: string
+      responses:
+        "200":
+          description: code","msg"}
+          schema:
+            type: string
+      summary: 删除用户
+      tags:
+      - 用户模块
 swagger: "2.0"

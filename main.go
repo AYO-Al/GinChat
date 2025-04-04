@@ -1,9 +1,14 @@
 package main
 
-import "GinChat/router"
+import (
+	"GinChat/router"
+)
 
 func main() {
-	//db.Db.Debug().AutoMigrate(&models.UserBasic{})
+	//err := app.Db.AutoMigrate(&models.UserBasic{})
+	//if err != nil {
+	//	fmt.Println(err)
+	//}
 	r := router.Router()
 	r.Run()
 

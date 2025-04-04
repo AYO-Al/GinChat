@@ -1,7 +1,0 @@
-{
-  "addr": "ip",
-  "port": "3306",
-  "user": "user",
-  "password": "pass",
-  "dbname": "test"
-}

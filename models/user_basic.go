@@ -1,6 +1,7 @@
 package models
 
 import (
+	"GinChat/app"
 	"gorm.io/gorm"
 	"time"
 )
@@ -25,4 +26,10 @@ type UserBasic struct {
 
 func (table *UserBasic) TableName() string {
 	return "user_basic"
+}
+
+func GetUser() []*UserBasic {
+	var users []*UserBasic
+	app.DB.Find(&users)
+	return users
 }

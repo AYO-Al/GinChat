@@ -1,0 +1,7 @@
+{
+  "addr": "192.168.35.130",
+  "port": "3306",
+  "user": "user",
+  "password": "123@Qwe.!",
+  "dbname": "GinChat"
+}

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"math/rand"
 	"net/http"
 )
 
@@ -24,8 +25,8 @@ func GetData(c *gin.Context) {
 // @Router /user/create [post]
 func CreateUser(c *gin.Context) {
 	user := models.UserBasic{}
+	user.Salt = fmt.Sprintf("%6s", rand.Int31())
 	user.Name = c.PostForm("name")
-	user.PassWord = c.PostForm("password")
 	user.Phone = c.PostForm("phone")
 	user.Email = c.PostForm("email")
 	if models.FindUserByPhone(user.Phone) || models.FindUserByEmail(user.Email) || models.FindUserByName(user.Name) {
@@ -34,6 +35,8 @@ func CreateUser(c *gin.Context) {
 		})
 		return
 	}
+
+	user.PassWord = utils.MakePassword(c.PostForm("password"), user.Salt)
 
 	db := models.CreateUsers(user)
 
@@ -108,6 +111,33 @@ func UpdateUser(c *gin.Context) {
 	} else {
 		c.JSON(200, gin.H{
 			"msg": fmt.Sprintf("修改用户%s后信息:\nname:%s\npassword:%s\n", name, user.Name, user.PassWord),
+		})
+	}
+}
+
+// LoginUser
+// @Tags 用户模块
+// @Summary 用户登录
+// @param name formData string false "name"
+// @param password formData string false "password"
+// @Success 200 {string} json{"code","msg"}
+// @Router /user/login [post]
+func LoginUser(c *gin.Context) {
+	var user models.UserBasic
+	user.Name = c.PostForm("name")
+	if models.FindName(&user) {
+		if utils.ValidPassword(c.PostForm("password"), user.Salt, user.PassWord) {
+			c.JSON(200, gin.H{
+				"msg": "登录成功",
+			})
+		} else {
+			c.JSON(-1, gin.H{
+				"msg": "密码错误",
+			})
+		}
+	} else {
+		c.JSON(-1, gin.H{
+			"msg": "用户不存在",
 		})
 	}
 }

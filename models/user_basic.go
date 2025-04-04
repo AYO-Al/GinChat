@@ -70,3 +70,12 @@ func FindUserByEmail(email string) bool {
 		return false
 	}
 }
+
+func FindName(user *UserBasic) bool {
+	app.Db.Where("name = ?", user.Name).First(&user)
+	if user.Salt != "" {
+		return true
+	} else {
+		return false
+	}
+}
